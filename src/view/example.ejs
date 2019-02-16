@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>WK CheckList</title>
+</head>
+<style>
+    .test-tool {
+        margin-bottom: 20px;
+    }
+
+    .test-item {
+        margin-bottom: 20px;
+    }
+</style>
+<body>
+<div>
+    <div class="header">Cookie测试</div>
+    <div class="test-tool">
+        <a href="javascript:void 0;" onclick="test('clear-cookie')">清除所有cookie</a>
+    </div>
+    <div class="test-tool">
+        <a href="javascript:void 0;" onclick="test('set-cookie')">设置所有cookie</a>
+    </div>
+    <!--<iframe src="" frameborder="0"></iframe>-->
+    <div>
+        <div class="test-item">
+            <a href="https://testb.huangxsu.com/test/redirect-cookie?domain=testa.huangxsu.com">测试</a>
+            testb -> testa 302
+        </div>
+        <div class="test-item">
+            <a href="/test/redirect-cookie?domain=testb.huangxsu.com">测试</a>
+            testa -> testb 302
+        </div>
+        <div class="test-item">
+            <a href="javascript:void 0;" onclick="test('ajax-same-origin-post')">测试</a>
+            同域 ajax
+            <span class="status">√</span>
+        </div>
+        <div class="test-item">
+            <a href="javascript:void 0;" onclick="test('ajax-cross-origin-post')">测试</a>
+            跨域 ajax
+            <span class="status">√</span>
+        </div>
+        <div class="test-item">
+            <a href="javascript:void 0;" onclick="test('post-same-origin-cookie')">测试</a>
+            同域 表单 post
+            <span class="status">√</span>
+        </div>
+        <div class="test-item">
+            <a href="javascript:void 0;" onclick="test('post-cross-origin-cookie')">测试</a>
+            跨域 表单 post
+            <span class="status">√</span>
+        </div>
+    </div>
+</div>
+</body>
+<script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script>
+    function submitForm(action, obj) {
+        var form = document.createElement("form");
+        form.method = "POST";
+        form.action = action;
+        Object.keys(obj).forEach(function (key) {
+            var element = document.createElement("input");
+            element.value = obj[key];
+            element.name = key;
+            form.appendChild(element);
+        })
+        document.body.appendChild(form);
+        form.style.display = 'none'
+        form.submit();
+    }
+
+    function test(type) {
+        switch (type) {
+            case 'set-cookie':
+                $.when($.ajax({
+                    url: '/test/cookie',
+                    method: 'get'
+                }), $.ajax({
+                    url: 'https://testb.huangxsu.com/test/cookie',
+                    method: 'get',
+                    xhrFields: {
+                        withCredentials: true
+                    }
+                })).then(function (res) {
+                    alert('设置成功')
+                })
+                break;
+            case 'clear-cookie':
+                $.when($.ajax({
+                    url: '/test/cookie',
+                    method: 'delete'
+                }), $.ajax({
+                    url: 'https://testb.huangxsu.com/test/cookie',
+                    method: 'delete',
+                    xhrFields: {
+                        withCredentials: true
+                    }
+                })).then(function (res) {
+                    alert('清除成功')
+                })
+                break;
+            case 'ajax-same-origin-get':
+                $.ajax({
+                    url: '/test/ajax-cookie',
+                    method: 'get'
+                }).then(function (response) {
+                    alert(JSON.stringify(response))
+                }).fail(function (err) {
+                    alert(JSON.stringify(err.responseJSON.message))
+                })
+                break;
+            case 'ajax-cross-origin-get':
+                $.ajax({
+                    url: 'https://testb.huangxsu.com/test/ajax-cookie',
+                    method: 'get',
+                    xhrFields: {
+                        withCredentials: true
+                    }
+                }).then(function (response) {
+                    alert(JSON.stringify(response))
+                }).fail(function (err) {
+                    alert(JSON.stringify(err.responseJSON.message))
+                })
+                break;
+            case 'ajax-same-origin-post':
+                $.ajax({
+                    url: '/test/ajax-cookie',
+                    method: 'post'
+                }).then(function (response) {
+                    alert(JSON.stringify(response))
+                }).fail(function (err) {
+                    alert(JSON.stringify(err.responseJSON.message))
+                })
+                break;
+            case 'ajax-cross-origin-post':
+                $.ajax({
+                    url: 'https://testb.huangxsu.com/test/ajax-cookie',
+                    method: 'post',
+                    xhrFields: {
+                        withCredentials: true
+                    }
+                }).then(function (response) {
+                    alert(JSON.stringify(response))
+                }).fail(function (err) {
+                    alert(JSON.stringify(err.responseJSON.message))
+                })
+                break;
+            case 'post-same-origin-cookie':
+                submitForm('/test/post-request', {host: location.host, target: 'same-origin', value: 'good job'})
+                break;
+            case 'post-cross-origin-cookie':
+                submitForm('https://testb.huangxsu.com/test/post-request', {
+                    host: location.host,
+                    target: 'cross-origin',
+                    value: 'good job'
+                })
+                break;
+            default:
+                console.log('default')
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Form 结果</title>
+</head>
+<style>
+    .test-item {
+        margin-bottom: 20px;
+    }
+</style>
+<body>
+<div>
+    <div class="test-item">
+        body
+    </div>
+    <div class="test-item">
+        <%= JSON.stringify(request.body) %>
+    </div>
+    <div class="test-item">
+        cookies
+    </div>
+    <div class="test-item">
+        <%= JSON.stringify(request.cookies) %>
+    </div>
+</div>
+</body>
+</html>

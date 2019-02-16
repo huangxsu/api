@@ -1,2 +1,2 @@
-# api.huangxsu.com
+# api
 api.huangxsu.com

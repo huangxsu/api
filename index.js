@@ -16,6 +16,18 @@ app.use(views(path.join(__dirname, './src/view'), {
 }))
 
 router.get('/test/example', async (ctx, next) => {
+    ctx.cookies.set(
+        'test-site-host',
+        '',
+        {
+            domain: '.huangxsu.com',
+            maxAge: 0,
+            signed: false,
+            httpOnly: false,  // 是否只用于http请求中获取
+            overwrite: true  // 是否允许重写
+        }
+    )
+
     await ctx.render('example')
 });
 
@@ -68,7 +80,7 @@ router.get('/test/redirect-cookie', async (ctx, next) => {
         'test-site-host',
         ctx.host,
         {
-            domain,
+            domain: '.huangxsu.com',
             maxAge: 10 * 60 * 1000,
             signed: false,
             httpOnly: false,  // 是否只用于http请求中获取
@@ -101,6 +113,17 @@ router.delete('/test/cookie', async (ctx, next) => {
     ctx.cookies.set(
         'test-site-host', '',
         {
+            maxAge: 0,
+            signed: false,
+            httpOnly: false,  // 是否只用于http请求中获取
+            overwrite: true  // 是否允许重写
+        }
+    )
+    ctx.cookies.set(
+        'test-bad-cookie',
+        '',
+        {
+            maxAge: 0,
             signed: false,
             httpOnly: false,  // 是否只用于http请求中获取
             overwrite: true  // 是否允许重写

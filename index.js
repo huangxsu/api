@@ -15,6 +15,10 @@ app.use(views(path.join(__dirname, './src/view'), {
     extension: 'ejs'
 }))
 
+router.get('/test/list', async (ctx, next) => {
+    await ctx.render('list')
+});
+
 router.get('/test/example', async (ctx, next) => {
     ctx.cookies.set(
         'test-site-host',

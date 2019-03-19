@@ -6,11 +6,14 @@
     <title>长列表</title>
 </head>
 <script>
-    window.addEventListener('pageshow', function (event) {
-        if (event.persisted) {
-            location.reload()
-        }
-    })
+    // window.addEventListener('pageshow', function (event) {
+    //     if (event.persisted) {
+    //         location.reload()
+    //     }
+    // })
+    function openLink(){
+        window.open('/test/example')
+    }
 </script>
 <style>
     .test-tool {
@@ -34,7 +37,17 @@
             <div>姓名<input type="text"></div>
             <button type="submit">提交</button>
         </form>
-        <!--<div><a href="/test/example">点击我1</a></div>-->
+        <div style="margin-bottom: 10px;">
+            <a href="/test/example" target="_blank">a标签打开新窗口</a>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <button type="button" onclick="openLink()">window.open打开新窗口</button>
+        </div>
+        <form action="/test/example" target="_blank" method="post">
+            <input type="hidden" value="123" name="haha">
+            <button type="submit">form表单打开新窗口</button>
+        </form>
+
         <!--<div><a href="/test/example">点击我1</a></div>-->
         <!--<div><a href="/test/example">点击我1</a></div>-->
         <!--<div><a href="/test/example">点击我1</a></div>-->
